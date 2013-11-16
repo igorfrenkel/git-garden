@@ -34,18 +34,20 @@ var vis = d3.select("#viz").append("svg:svg")
 var width = 960,
     height = 500;
 
+var primaryLine = {
+  y: 100
+};
+
+var secondaryLine = {
+  y: 200
+};
+
 var color = d3.scale.category20();
 
 var force = d3.layout.force()
     .charge(-120)
-    .linkDistance(60)
+    .linkDistance(150)
     .size([width, height]);
-
-//var svg = d3.select("body").append("svg")
-//    .attr("width", width)
-//    .attr("height", height);
-
-
 
 // Create a tree "canvas"
 var tree = d3.layout.tree()
@@ -75,6 +77,7 @@ d3.json("scripts/commits.json", function(graph) {
         .call(force.drag);
 
     var labels = gnodes.append("text")
+        .attr("dy", -20)
         .text(function(d) { return d.name; });
 
     console.log(labels);
@@ -91,7 +94,12 @@ d3.json("scripts/commits.json", function(graph) {
 
         var k = .5 * e.alpha;
         node.each(function(d) {
-            d.x += ((6 + d.group) * 100 - d.x) * k;
+            d.x += ((4 + d.group) * 100 - d.x) * k;
+            if(d.line_number == 0) {
+              d.y = primaryLine.y;
+            } else {
+              d.y = secondaryLine.y;
+            }
         });
 
     });
