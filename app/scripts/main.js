@@ -199,7 +199,7 @@ var updateTempConnector = function() {
 }
 
 // ------------- normal tree drawing code --------
-var vis = d3.select("#viz").append("svg").attr("width", 400).attr("height", 300).append("svg:g").attr("transform", "translate(50, 0)")
+//var vis = d3.select("#viz").append("svg").attr("width", 400).attr("height", 300).append("svg:g").attr("transform", "translate(50, 0)")
 var tree = d3.layout.tree().size([200,200]);
 var nodes = tree.nodes(treeData);
 var links = tree.links(nodes);
