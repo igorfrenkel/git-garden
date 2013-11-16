@@ -1,13 +1,13 @@
 { 
   "nodes": [ 
-    { "name": "42afb", "group": 1 },
-    { "name": "3a1d9", "group": 2 },
-    { "name": "1a410", "group": 2 },
-    { "name": "12345", "group": 3 }
+    { "name": "42afb", "group": 1, "line_number": 0 },
+    { "name": "3a1d9", "group": 2, "line_number": 0 },
+    { "name": "1a410", "group": 2, "line_number": 1 },
+    { "name": "12345", "group": 3, "line_number": 0 }
   ],
-    "links": [ 
-      { "source": 0, "target": 1, "value" : 1 },
-      { "source": 0, "target": 2, "value" : 1 },
-      { "source": 1, "target": 3, "value" : 1 }
+  "links": [ 
+    { "source": 0, "target": 1, "value" : 1 },
+    { "source": 0, "target": 2, "value" : 1 },
+    { "source": 1, "target": 3, "value" : 1 }
   ] 
 }
