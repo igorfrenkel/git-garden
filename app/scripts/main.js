@@ -253,10 +253,5 @@ vis.selectAll(".lonely")
     .attr("class", "lonely")
     .attr("cx", function(d) { return d.x; })
     .attr("cy", function(d) { return d.y; })
-    .call(circleDragger)
-
-
-
-
-//var drawGraph = function(graph) {
+    .call(circleDragger);
 
