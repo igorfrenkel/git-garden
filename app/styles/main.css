@@ -27,3 +27,19 @@ body {
     color: #000;
     padding: 0.2em 0;
 }
+
+.nodelink {
+    fill: none;
+    stroke: #ccc;
+    stroke-width: 4.5px;
+}
+.templink {
+    fill: none;
+    stroke: red;
+    stroke-width: 3px;
+}
+
+.nodelink.inactive {
+    /*stroke: red;*/
+    opacity: 0;
+}
