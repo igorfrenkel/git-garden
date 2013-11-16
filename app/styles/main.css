@@ -36,3 +36,19 @@ text {
   font: 10px sans-serif;
   pointer-events: none;
 }
+
+.nodelink {
+    fill: none;
+    stroke: #ccc;
+    stroke-width: 4.5px;
+}
+.templink {
+    fill: none;
+    stroke: red;
+    stroke-width: 3px;
+}
+
+.nodelink.inactive {
+    /*stroke: red;*/
+    opacity: 0;
+}

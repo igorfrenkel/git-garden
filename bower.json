@@ -5,5 +5,7 @@
     "jquery": "~1.10.2",
     "d3": "~3.3.9"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "d3": "~3.3.9"
+  }
 }
