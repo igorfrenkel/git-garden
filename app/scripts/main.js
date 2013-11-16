@@ -60,8 +60,7 @@ d3.json("scripts/commits.json", function(graph) {
     var link = vis.selectAll(".link")
         .data(graph.links)
         .enter().append("line")
-        .attr("class", "link")
-        .style("stroke-width", function(d) { return Math.sqrt(d.value); });
+        .attr("class", "link");
 
     var gnodes = vis.selectAll('g.gnode')
         .data(graph.nodes)
@@ -92,7 +91,7 @@ d3.json("scripts/commits.json", function(graph) {
 
         var k = .5 * e.alpha;
         node.each(function(d) {
-            d.x += ((4 + d.group) * 100 - d.x) * k;
+            d.x += ((6 + d.group) * 100 - d.x) * k;
         });
 
     });
