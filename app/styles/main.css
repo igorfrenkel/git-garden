@@ -52,3 +52,6 @@ text {
     /*stroke: red;*/
     opacity: 0;
 }
+.node.active {
+  fill: red;
+}
