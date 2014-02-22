@@ -124,4 +124,4 @@ function PaintAt(x) {
   new Canvas().paint_at(x);
 }
 
-// PaintAt(900);
+PaintAt(900);
