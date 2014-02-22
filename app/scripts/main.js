@@ -4,24 +4,30 @@ function renderGraph(points, config) {
   });
 }
 
-function walkBranch(head, max_depth) {
-  var result = [];
-  return result;
+function walkBranch(cur_commit, branchIdx, depth) {
+  var p = new CanvasCommit(cur_commit.id, depth-1, branchIdx);
+  if(depth == 0 || cur_commit.parent == null) {
+    return [p];
+  }
+  else {
+    return [p].concat(walkBranch(cur_commit.parent, branchIdx, depth-1));
+  }
 }
 
 function walkTree(branches, max_depth) {
   var branchIdx = 0;
   var result = [];
   _.each(branches, function(branch) {
-    result.concat(result, walkBranch(branch.head, max_depth));
+    result = result.concat(walkBranch(branch.head, branchIdx, max_depth));
     branchIdx++;
   });
+  return result;
 }
 
-function Point(id, x, y) {
+function CanvasCommit(id, col, row) {
   this.id = id;
-  this.x = null;
-  this.y = null;
+  this.col = col;
+  this.row = row;
 }
 
 var MAX_COLUMNS = 10;
