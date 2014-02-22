@@ -14,12 +14,12 @@ function Commit(parent, id) {
 }
 
 var scale = 1;
-var c1 = new Commit(null, 'c1');
-var c2 = new Commit(c1, 'c2');
-var c3 = new Commit(c2, 'c3');
-var d1 = new Commit(c2, 'd1');
-var d2 = new Commit(d1, 'd2');
-var d3 = new Commit(d2, 'd3');
+var c1 = new Commit(null, 'd8f48d2be4a4a5e4e1a8586ad053352895d549dd');
+var c2 = new Commit(c1, '82afc861db40832ac700c2c7c80badf244882ff4');
+var c3 = new Commit(c2, '36c3a190c217a36cabab42c73c77104cf25182da');
+var d1 = new Commit(c2, 'fdac3c051441f7762d84087c8ebdf9a64cbac272');
+var d2 = new Commit(d1, '6a41c66e604cdacc10d0dc6c82f39e47270dcd10');
+var d3 = new Commit(d2, '7d58272908d9fa48b5a87453523f9516d37df5d5');
 var master_head = c3;
 
 var master = new Branch(master_head);
@@ -28,9 +28,9 @@ var branches = [master, feature1];
 
 var cur_x = 750;
 
-function draw_commit(y) {
-  var c1 = paper.circle(cur_x, y, 14),
-      c2 = paper.circle(cur_x, y, 10);
+function draw_commit(commit) {
+  var c1 = paper.circle(commit.x, commit.y, 14),
+      c2 = paper.circle(commit.x, commit.y, 10);
   c1.attr({
     fill: '#932d70'
   });
@@ -39,12 +39,8 @@ function draw_commit(y) {
     stroke: '#FFF',
     strokeWidth: (2) + 'px'
   });
-  var old_x = cur_x;
-  cur_x -= 100;
-  return {
-    x: old_x,
-    y: y
-  };
+  paper.text(commit.x-15, commit.y+25, commit.id.substr(0,6));
+  commit.drawn = true;
 }
 
 function draw_connector(commit1, commit2) {
@@ -57,11 +53,16 @@ function draw_connector(commit1, commit2) {
   });
 }
 
+function move_pen() {
+  cur_x -= 100;
+}
+
 function render(commit, y) {
-  coords = draw_commit(y);
-  commit.drawn = true;
-  commit.x = coords.x;
-  commit.y = coords.y;
+  commit.x = cur_x;
+  commit.y = y;
+  draw_commit(commit);
+  move_pen();
+  
   if(commit.parent && commit.parent.drawn) {
     draw_connector(commit.parent, commit);
   }
