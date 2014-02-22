@@ -1,257 +1,148 @@
-//JSON object with the data
-var treeData1 = [
-{
-   id: "42afba9dae229e85606b75b8e4e8d3443edaf237",
-   parent: undefined
-},
-{
-   id: "3a1d98d866bfc0b372bd7a15c8f07c67319697c6",
-   parent: "42afba9dae229e85606b75b8e4e8d3443edaf237"
-},
-{
-   id: "1a410efbd13591db07496601ebc7a059dd55cfe9",
-   parent: "42afba9dae229e85606b75b8e4e8d3443edaf237"
-},
-{
-   id: "123456d866bfc0b372bd7a15c8f07c67319697c6",
-   parent: "3a1d98d866bfc0b372bd7a15c8f07c67319697c6"
-}
-];
+var paper = Snap('#svg');
+/*
+var g1 = paper.g(c1, c2);
 
-//var treeData = convertGitObject(treeData1);
-//function convertGitObject(obj) {
-//}
+window.setInterval(function(){
 
-var w = $(window).width();
-var h = $(window).height();
-var fill = d3.scale.category20();
-var vis = d3.select("#viz").append("svg:svg")
-                           .attr("width", w)
-                           .attr("height", h)
-                           .append("svg:g")
-                           .attr("transform", "translate(40, 0)"); // shift everything to the right
+  c1.animate({r: 22 },
+             250,
+             );
+             
+c2.animate({r: 20 },
+             250,
+             mina.elastic);
+}, 500);
+*/
 
-var width = 960,
-    height = 500;
+function draw_base(scale) {
+  var y1 = 50;
+  var line_width = 4 * scale + 'px';
+  var line1 = paper.line(0, y1, 1000, y1);
+  line1.attr({
+    stroke: '#4182c4',
+    strokeWidth: line_width
+  });
+  y2 = y1 + 150 * scale;
+/*  var line2 = paper.line(200,y2,1000,y2);
+  line2.attr({
+    stroke: '#4182c4',
+    strokeWidth: line_width,
+    opacity: 0.5
+  });
+  var connector = paper.path("M100," + y1 + " C200,125 150,175 200," + y2);
+  connector.attr({
+    fill: '#dedede',
+    stroke: '#4182c4',
+    strokeWidth: line_width,
+    opacity: 0.5
+  });*/
+  /* <path d="M29,109 C136,193 148,268 196,269 Z" /> */
 
-var primaryLine = {
-  y: 100
-};
-
-var secondaryLine = {
-  y: 200
-};
-
-var color = d3.scale.category20();
-
-var force = d3.layout.force()
-    .charge(-120)
-    .linkDistance(150)
-    .size([width, height]);
-
-// Create a tree "canvas"
-var tree = d3.layout.tree()
-  .size([h*0.8,w*0.8]);
-
-d3.json("scripts/commits.json", function(graph) {
-    force
-        .nodes(graph.nodes)
-        .links(graph.links)
-        .start();
-
-    var link = vis.selectAll(".link")
-        .data(graph.links)
-        .enter().append("line")
-        .attr("class", "link");
-
-    var gnodes = vis.selectAll('g.gnode')
-        .data(graph.nodes)
-        .enter()
-        .append('g')
-        .classed('gnode', true);
-
-    var node = gnodes.append("circle")
-        .attr("class", "node")
-        .attr("r", 5)
-        .style("fill", function(d) { return color(d.group); })
-        .call(force.drag);
-
-    var labels = gnodes.append("text")
-        .attr("dy", -20)
-        .text(function(d) { return d.name; });
-
-    console.log(labels);
-
-    force.on("tick", function(e) {
-        link.attr("x1", function(d) { return d.source.x; })
-            .attr("y1", function(d) { return d.source.y; })
-            .attr("x2", function(d) { return d.target.x; })
-            .attr("y2", function(d) { return d.target.y; });
-
-        gnodes.attr("transform", function(d) {
-            return 'translate(' + [d.x, d.y] + ')';
-        });
-
-        var k = .5 * e.alpha;
-        node.each(function(d) {
-            d.x += ((4 + d.group) * 100 - d.x) * k;
-            if(d.line_number == 0) {
-              d.y = primaryLine.y;
-            } else {
-              d.y = secondaryLine.y;
-            }
-        });
-
-    });
-});
-
-var treeData = {
-    "name" : "A",
-    "children" : [
-        {"name" : "A1", "children": [{
-            "name": 'B1',
-            "children": [
-                {name: 'C1'}
-            ]
-        }]},
-        {"name" : "A2",
-        "children": [{name: 'D1'}] }] };
-var selectedNode = null;
-var draggingNode = null;
-
-// ------------- moving -------------------------------
-var overCircle = function(d) {
-    console.log(d);
-    selectedNode = d;
-    updateTempConnector();
-}
-var outCircle = function(d) {
-    selectedNode = null;
-    updateTempConnector();
+/*  var c1 = paper.circle(100, 50, 14 * scale),
+      c2 = paper.circle(100, 50, 10 * scale);
+  c1.attr({
+    fill: '#932d70'
+  });
+  c2.attr({
+    fill: '#932d70',
+    stroke: '#FFF',
+    strokeWidth: (2 * scale) + 'px'
+  });*/
 }
 
-var circleDragger = d3.behavior.drag()
-    .on("dragstart", function(d){
-        draggingNode = d;
-        // it's important that we suppress the mouseover event on the node being dragged. Otherwise it will absorb the mouseover event and the underlying node will not detect it
-        d3.select(this).attr( 'pointer-events', 'none' );
-    })
-    .on("drag", function(d) {
-        d.x += d3.event.dx;
-        d.y += d3.event.dy;
-        var node = d3.select(this);
-        node.attr( { cx: d.x, cy: d.y } );
-        updateTempConnector();
-    })
-    .on("dragend", function(d){
-        draggingNode = null;
-        // now restore the mouseover event or we won't be able to drag a 2nd time
-        d3.select(this).attr( 'pointer-events', '' );
-    })
+//draw_base(1);
 
-
-var wipeAllInactive = function() {
-    d3.select("#viz").selectAll(".nodelink")
-        .attr("class", "nodelink")
-
+function Branch(head) {
+  this.head = head;
 }
 
-var updateTempConnector = function() {
-    var data = [];
-
-    wipeAllInactive();
-
-    if ( draggingNode != null && selectedNode != null) {
-        // have to flip the source coordinates since we did this for the existing connectors on the original tree
-        var node1 = {source: {x: selectedNode.y, y: selectedNode.x},
-            target: {x: draggingNode.x, y: draggingNode.y} };
-
-        var node2 = {source: {x: selectedNode.parent.y, y: selectedNode.parent.x},
-            target: {x: draggingNode.x, y: draggingNode.y} };
-
-        data = [ node1, node2];
-
-
-        for(i=0; i< paths[0].length; i++){
-            var path = paths[0][i];
-            var source = path["__data__"].source.name
-            var target = path["__data__"].target.name
-
-//            path = d3.select(path)
-//            path.attr("class", "nodelink");
-
-            if((source == selectedNode.name || source == selectedNode.parent.name) &&(target == selectedNode.name || target == selectedNode.parent.name )){
-                path = d3.select(path)
-                path.attr("class", "nodelink inactive");
-                console.log(path);
-            }
-            else {
-                path = d3.select(path)
-                path.attr("class", "nodelink");
-            }
-        }
-    }
-    var link = vis.selectAll(".templink").data(data);
-
-//    console.log(selectedNode);
-//    console.log(selectedNode.parent);
-
-
-
-
-
-    link.enter().append("path")
-        .attr("class", "templink")
-        .attr("d", d3.svg.diagonal() )
-        .attr('pointer-events', 'none');
-
-    link.attr("d", d3.svg.diagonal() )
-
-    link.exit().remove();
+function Commit(parent, id) {
+  this.parent = parent;
+  this.id = id;
+  this.x = null;
+  this.y = null;
+  this.drawn = false;
 }
 
-// ------------- normal tree drawing code --------
-//var vis = d3.select("#viz").append("svg").attr("width", 400).attr("height", 300).append("svg:g").attr("transform", "translate(50, 0)")
-var tree = d3.layout.tree().size([200,200]);
-var nodes = tree.nodes(treeData);
-var links = tree.links(nodes);
-console.log(links);
+var scale = 1;
+var c1 = new Commit(null, 'c1');
+var c2 = new Commit(c1, 'c2');
+var c3 = new Commit(c2, 'c3');
+var d1 = new Commit(c2, 'd1');
+var d2 = new Commit(d1, 'd2');
+var d3 = new Commit(d2, 'd3');
+var master_head = c3;
 
-var diagonalHorizontal = d3.svg.diagonal().projection( function(d) { return [d.y, d.x]; } );
-var paths = vis.selectAll(".nodelink")
-    .data(links)
-    .enter().append("path")
-    .attr("class", "nodelink")
-    .attr("d", diagonalHorizontal)
-    .attr('pointer-events', 'none');
-console.log(paths);
+var master = new Branch(master_head);
+var feature1 = new Branch(d3);
+var branches = [master, feature1];
 
-var node = vis.selectAll("g.node")
-    .data(nodes)
-    .enter().append("g")
-    .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
+var cur_x = 750;
 
-node.append("circle")
-    .attr("r", 5)
-    .attr('pointer-events', 'none');
+function draw_commit(y) {
+  var c1 = paper.circle(cur_x, y, 14),
+      c2 = paper.circle(cur_x, y, 10);
+  c1.attr({
+    fill: '#932d70'
+  });
+  c2.attr({
+    fill: '#932d70',
+    stroke: '#FFF',
+    strokeWidth: (2) + 'px'
+  });
+  var old_x = cur_x;
+  cur_x -= 100;
+  return {
+    x: old_x,
+    y: y
+  };
+}
 
-// ------------- trickery to avoid collision detection
+function draw_connector(commit1, commit2) {
+  
+  /*var connector = paper.path("M" + commit1.x +"," + commit1.y + " C200,125 150,175 " + commit2.x + "," + commit2.y);
+*/  
+  var connector = paper.path("M" + commit1.x +"," + commit1.y + " " + commit2.x + "," + commit2.y);
+  
+  connector.attr({
+    fill: '#dedede',
+    stroke: '#4182c4',
+    strokeWidth: '2px',
+    opacity: 0.5
+  });
+}
 
-// phantom node to give us mouseover in a radius around it
-node.append("circle")
-    .attr("r", 60)
-    .attr("opacity", 0.3) // change this to non-zero to see the target area
-    .attr('pointer-events', 'mouseover')
-    .on("mouseover", overCircle)
-    .on("mouseout", outCircle)
+function render(commit, y) {
+  //draw right most commit
+  coords = draw_commit(y);
+  commit.drawn = true;
+  commit.x = coords.x;
+  commit.y = coords.y;
+  if(commit.parent && commit.parent.drawn) {
+    draw_connector(commit.parent, commit);
+  }
+  // if commit has parent
+  //   render parent
+  else if(commit.parent != null) {
+    render(commit.parent, y);
+    draw_branch(commit, commit.parent);
+  }
+}
 
-// a new, unconnected node that can be dragged near others to connect it
-newNodes = [ {x:300,y:5, name: 'new'} ];
-vis.selectAll(".lonely")
-    .data(newNodes).enter().append("circle")
-    .attr("r", 5)
-    .attr("class", "lonely")
-    .attr("cx", function(d) { return d.x; })
-    .attr("cy", function(d) { return d.y; })
-    .call(circleDragger);
+function draw_branch(beginning, end) {
+  var y1 = 50;
+  var line_width = 4 * scale + 'px';
+  var line1 = paper.line(beginning.x, beginning.y, end.x, end.y);
+  line1.attr({
+    stroke: '#4182c4',
+    strokeWidth: line_width
+  });
+  y2 = y1 + 150 * scale;
+}
 
+var head = master.head;
+render(master.head, 50);
+
+cur_x = 750;
+head = feature1.head;
+render(feature1.head, 200);

@@ -3,7 +3,7 @@ var vis = d3.select("#viz").append("svg:svg")
                            .attr("width", 400)
                            .attr("height", 400)
                            .append("svg:g")
-                           .attr("transform", "translate(80, 80)"); // shift everything to the right
+                           .attr("transform", "translate(0, 0)"); // shift everything to the right
 
 
 var treeData = {
@@ -43,16 +43,22 @@ var nodeSelected = function(node) {
 
 var circleDragger = d3.behavior.drag()
     .on("dragstart", function(d){
+      console.log(d.x, d.y)
+        var node = d3.select(this);
+        console.log(node.attr("cx"), node.attr("cy"));
+        node.attr( { cx: d.x, cy: d.y } );
+
         draggingNode = d;
         // it's important that we suppress the mouseover event on the node being dragged. Otherwise it will absorb the mouseover event and the underlying node will not detect it
         d3.select(this).attr( 'pointer-events', 'none' );
+
     })
     .on("drag", function(d) {
         d.x += d3.event.dx;
         d.y += d3.event.dy;
         var node = d3.select(this);
         node.attr( { cx: d.x, cy: d.y } );
-        updateTempConnector();
+        // updateTempConnector();
     })
     .on("dragend", function(d){
         draggingNode = null;
@@ -81,5 +87,6 @@ node.append("circle")
     .attr("r", 5)
     .attr("class", "node")
     .attr('pointer-events', "click")
-    .on("click", nodeSelected);
+    // .on("click", nodeSelected)
+    .call(circleDragger);
 
