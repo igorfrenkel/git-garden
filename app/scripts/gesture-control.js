@@ -7,8 +7,7 @@ function setMovementInProgress() {
 }
 
 LeapManager.init({
-  maxCursors:1,
-  interactiveSelector: "#navbar li, .tile",
+  maxCursors:5,
   gestureScope:this,
   gestureCallback:function(e){
     if(e.type === "swipe" && !moveInProgress) {
