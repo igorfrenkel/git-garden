@@ -1,56 +1,5 @@
 var paper = Snap('#svg');
-/*
-var g1 = paper.g(c1, c2);
 
-window.setInterval(function(){
-
-  c1.animate({r: 22 },
-             250,
-             );
-             
-c2.animate({r: 20 },
-             250,
-             mina.elastic);
-}, 500);
-*/
-
-function draw_base(scale) {
-  var y1 = 50;
-  var line_width = 4 * scale + 'px';
-  var line1 = paper.line(0, y1, 1000, y1);
-  line1.attr({
-    stroke: '#4182c4',
-    strokeWidth: line_width
-  });
-  y2 = y1 + 150 * scale;
-/*  var line2 = paper.line(200,y2,1000,y2);
-  line2.attr({
-    stroke: '#4182c4',
-    strokeWidth: line_width,
-    opacity: 0.5
-  });
-  var connector = paper.path("M100," + y1 + " C200,125 150,175 200," + y2);
-  connector.attr({
-    fill: '#dedede',
-    stroke: '#4182c4',
-    strokeWidth: line_width,
-    opacity: 0.5
-  });*/
-  /* <path d="M29,109 C136,193 148,268 196,269 Z" /> */
-
-/*  var c1 = paper.circle(100, 50, 14 * scale),
-      c2 = paper.circle(100, 50, 10 * scale);
-  c1.attr({
-    fill: '#932d70'
-  });
-  c2.attr({
-    fill: '#932d70',
-    stroke: '#FFF',
-    strokeWidth: (2 * scale) + 'px'
-  });*/
-}
-
-//draw_base(1);
 
 function Branch(head) {
   this.head = head;
@@ -99,11 +48,7 @@ function draw_commit(y) {
 }
 
 function draw_connector(commit1, commit2) {
-  
-  /*var connector = paper.path("M" + commit1.x +"," + commit1.y + " C200,125 150,175 " + commit2.x + "," + commit2.y);
-*/  
   var connector = paper.path("M" + commit1.x +"," + commit1.y + " " + commit2.x + "," + commit2.y);
-  
   connector.attr({
     fill: '#dedede',
     stroke: '#4182c4',
@@ -113,7 +58,6 @@ function draw_connector(commit1, commit2) {
 }
 
 function render(commit, y) {
-  //draw right most commit
   coords = draw_commit(y);
   commit.drawn = true;
   commit.x = coords.x;
@@ -121,8 +65,6 @@ function render(commit, y) {
   if(commit.parent && commit.parent.drawn) {
     draw_connector(commit.parent, commit);
   }
-  // if commit has parent
-  //   render parent
   else if(commit.parent != null) {
     render(commit.parent, y);
     draw_branch(commit, commit.parent);
