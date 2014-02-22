@@ -2,14 +2,22 @@ var paper = Snap('#svg');
 
 var curr_left = 800;
 function move_viewport_left() {
-  curr_left+=150;
-  $('#viewport').animate({scrollLeft: curr_left});
+  curr_left -= 150;
+  PaintAt(curr_left);
 }
 
 function move_viewport_right() {
-  curr_left-=150;
-  $('#viewport').animate({scrollLeft: curr_left});
+  curr_left += 150;
+  PaintAt(curr_left);
 }
+
+$("#left").click(function() {
+  move_viewport_left();
+});
+
+$("#right").click(function() {
+  move_viewport_right();
+});
 
 function Branch(head) {
   this.head = head;
