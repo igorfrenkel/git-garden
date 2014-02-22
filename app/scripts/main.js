@@ -1,4 +1,4 @@
-function renderGraph(points, config) {
+  function renderGraph(points, config) {
   _.each(points, function(p){
     console.log('rendering ' + p.id + ' on column: ' + p.col + ', row: ' + p.row);
   });

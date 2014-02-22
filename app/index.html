@@ -18,11 +18,18 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
     </head>
     <body>
-       <div id="viewport" style="width: 799px">
+
+        <a href="#" id="left">&larr;</a> <a href="#" id="right">&rarr;</a>
+        <div id="viewport" style="width: 799px">
           <svg id="svg"></svg>
         </div>
 
+        <ul id="indicator"></ul>
+
         <!-- build:js scripts/main.js -->
+        <script src="scripts/leap-manager.min.js"></script>
+        <script src="scripts/leap.min.js"></script>
+        <script src="scripts/gesture-control.js"></script>
         <script src="scripts/render.js"></script>
         <script src="scripts/main.js"></script>
         <!-- endbuild -->
